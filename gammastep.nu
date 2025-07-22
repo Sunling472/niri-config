@@ -1,0 +1,12 @@
+#! /bin/nu
+
+def main [] {
+  let pid: string = pidof gammastep | str trim
+
+  if $pid == "" {
+    gammastep -O 4000
+  } else {
+    let pid: int = $pid | into int
+    kill $pid
+  }
+}

@@ -1,0 +1,32 @@
+#!/bin/nu
+
+def main [] {
+}
+
+def "main scratch" [] {    
+    let workspaces: table = niri msg -j workspaces | from json
+    let active: string = $workspaces | each { |r| if $r.is_active {
+        let name = $r.name 
+        return $name
+    }}
+    if $active.0 == "_" {
+      niri msg action focus-workspace-previous 
+    } else {
+      niri msg action focus-workspace "_"
+    }
+}
+
+def "main workspace" [name: string] {
+    let workspaces: table = niri msg -j workspaces | from json
+    let active: string = $workspaces | each { |r| if $r.is_active {
+        let name = $r.name 
+        return $name
+    }}
+    $active | print
+    $name | print 
+    if $name != $active.0 {
+        niri msg action focus-workspace $name
+    } else {
+        niri msg action focus-workspace-previous 
+    }
+}

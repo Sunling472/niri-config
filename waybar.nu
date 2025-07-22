@@ -1,0 +1,13 @@
+#! /bin/nu
+
+def main [] {
+  let pid = pidof waybar | str trim 
+
+  if $pid == "" {
+    waybar
+  } else {
+    let pid = $pid | into int
+    kill $pid
+    waybar 
+  }
+}
