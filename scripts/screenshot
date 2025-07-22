@@ -1,4 +1,4 @@
-#! /bin/nu
+#!/bin/nu
 
 def main [] {
   "Avaible commands: area, full"

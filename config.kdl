@@ -457,15 +457,15 @@ binds {
     // Mod-Shift-/, which is usually the same as Mod-?,
     // shows a list of important hotkeys.
     Mod+Shift+Slash                                           { show-hotkey-overlay; }
-    Mod+N            hotkey-overlay-title="Toggle gammastep"  { spawn "nu" "/home/alice/.config/niri/gammastep.nu"; }
-    // Mod+L            hotkey-overlay-title="Toggle calendar"   { spawn "nu" "/home/alice/.config/niri/calendar.nu"; }
+    Mod+N            hotkey-overlay-title="Toggle gammastep"  { spawn "~/.config/niri/scripts/gammastep"; }
+    // Mod+L            hotkey-overlay-title="Toggle calendar"   { spawn  "~/.config/niri/calendar"; }
 
     // Suggested binds for running programs: terminal, app launcher, screen locker.
     Mod+Return hotkey-overlay-title="Open a Terminal: ghostty" { spawn "ghostty"; }
     Mod+D hotkey-overlay-title="Run an Application: fuzzel" { spawn "fuzzel"; }
-    Mod+A hotkey-overlay-title="Screenshot area" { spawn "nu" "/home/alice/.config/niri/screenshot.nu" "area"; }
-    Mod+Shift+A hotkey-overlay-title="Screenshot full" { spawn "nu" "/home/alice/.config/niri/screenshot.nu" "full"; }
-    Mod+P hotkey-overlay-title="Color picker" { spawn "nu" "/home/alice/.config/niri/color_picker.nu"; }
+    Mod+A hotkey-overlay-title="Screenshot area" { spawn "~/.config/niri/scripts/screenshot" "area"; }
+    Mod+Shift+A hotkey-overlay-title="Screenshot full" { spawn "~/.config/niri/scripts/screenshot" "full"; }
+    Mod+P hotkey-overlay-title="Color picker" { spawn "~/.config/niri/scripts/color_picker"; }
     Mod+B hotkey-overlay-title="Spawn: bluetuith" { spawn "ghostty" "-e" "bluetuith"; }
     Mod+Semicolon hotkey-overlay-title="Spawn: Zed" { spawn "zed"; }
     Mod+I hotkey-overlay-title="Toggle notifications" { spawn "swaync-client" "-t"; }
@@ -606,16 +606,16 @@ binds {
     //
     // For example, with 2 workspaces + 1 empty, indices 3, 4, 5 and so on
     // will all refer to the 3rd workspace.
-    Mod+1 { spawn "/home/alice/.config/niri/toggle" "workspace" "1"; }
-    Mod+2 { spawn "/home/alice/.config/niri/toggle" "workspace" "2"; }
-    Mod+3 { spawn "/home/alice/.config/niri/toggle" "workspace" "3"; }
-    Mod+4 { spawn "/home/alice/.config/niri/toggle" "workspace" "4"; }
-    Mod+5 { spawn "/home/alice/.config/niri/toggle" "workspace" "5"; }
-    Mod+6 { spawn "/home/alice/.config/niri/toggle" "workspace" "6"; }
-    Mod+7 { spawn "/home/alice/.config/niri/toggle" "workspace" "7"; }
-    Mod+8 { spawn "/home/alice/.config/niri/toggle" "workspace" "8"; }
-    Mod+9 { spawn "/home/alice/.config/niri/toggle" "workspace" "9"; }
-    Mod+S { spawn "/home/alice/.config/niri/toggle" "scratch"; }
+    Mod+1 { spawn "~/.config/niri/scripts/toggle" "workspace" "1"; }
+    Mod+2 { spawn "~/.config/niri/scripts/toggle" "workspace" "2"; }
+    Mod+3 { spawn "~/.config/niri/scripts/toggle" "workspace" "3"; }
+    Mod+4 { spawn "~/.config/niri/scripts/toggle" "workspace" "4"; }
+    Mod+5 { spawn "~/.config/niri/scripts/toggle" "workspace" "5"; }
+    Mod+6 { spawn "~/.config/niri/scripts/toggle" "workspace" "6"; }
+    Mod+7 { spawn "~/.config/niri/scripts/toggle" "workspace" "7"; }
+    Mod+8 { spawn "~/.config/niri/scripts/toggle" "workspace" "8"; }
+    Mod+9 { spawn "~/.config/niri/scripts/toggle" "workspace" "9"; }
+    Mod+S { spawn "~/.config/niri/scripts/toggle" "scratch"; }
     
     Mod+Shift+1 { move-column-to-workspace 1; }
     Mod+Shift+2 { move-column-to-workspace 2; }
@@ -713,5 +713,5 @@ binds {
     // Powers off the monitors. To turn them back on, do any input like
     // moving the mouse or pressing any other key.
     Mod+Shift+P { power-off-monitors; }
-    Mod+Shift+K hotkey-overlay-title="Reload waybar" {spawn "nu" "/home/alice/.config/niri/waybar.nu";}
+    Mod+Shift+K hotkey-overlay-title="Reload waybar" {spawn  "~/.config/niri/scripts/waybar";}
 }
