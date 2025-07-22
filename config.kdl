@@ -282,12 +282,9 @@ layer-rule {
 
 // This line starts waybar, a commonly used bar for Wayland compositors.
 spawn-at-startup "xwayland-satellite"
-spawn-at-startup "swww-daemon"
-spawn-at-startup "swww" "img" "~/Downloads/green2.jpg"
-spawn-at-startup "waybar"
-spawn-at-startup "eww daemon"
-spawn-at-startup "swaync"
-spawn-at-startup "ghostty" "-e" "update"
+spawn-at-startup "~/.config/niri/scripts/wallpaper"
+spawn-at-startup "~/.config/niri/scripts/waybar"
+spawn-at-startup "mako"
 
 // Uncomment this line to ask the clients to omit their client-side decorations if possible.
 // If the client will specifically ask for CSD, the request will be honored.
@@ -320,7 +317,7 @@ workspace "2"
 workspace "3"
 workspace "4"
 workspace "5"
-workspace "_"
+workspace "_" // special
 
 // Window rules let you adjust behavior for individual windows.
 // Find more information on the wiki:
@@ -415,7 +412,7 @@ cursor {
 
 overview {
     zoom 0.35
-    backdrop-color "#182c30"
+    backdrop-color "#182d30"
 
     workspace-shadow {
         // off
@@ -606,16 +603,16 @@ binds {
     //
     // For example, with 2 workspaces + 1 empty, indices 3, 4, 5 and so on
     // will all refer to the 3rd workspace.
-    Mod+1 { spawn "~/.config/niri/scripts/toggle" "workspace" "1"; }
-    Mod+2 { spawn "~/.config/niri/scripts/toggle" "workspace" "2"; }
-    Mod+3 { spawn "~/.config/niri/scripts/toggle" "workspace" "3"; }
-    Mod+4 { spawn "~/.config/niri/scripts/toggle" "workspace" "4"; }
-    Mod+5 { spawn "~/.config/niri/scripts/toggle" "workspace" "5"; }
-    Mod+6 { spawn "~/.config/niri/scripts/toggle" "workspace" "6"; }
-    Mod+7 { spawn "~/.config/niri/scripts/toggle" "workspace" "7"; }
-    Mod+8 { spawn "~/.config/niri/scripts/toggle" "workspace" "8"; }
-    Mod+9 { spawn "~/.config/niri/scripts/toggle" "workspace" "9"; }
-    Mod+S { spawn "~/.config/niri/scripts/toggle" "scratch"; }
+    Mod+1 hotkey-overlay-title="Move to workspace: 1" { spawn "~/.config/niri/scripts/toggle" "workspace" "1"; }
+    Mod+2 hotkey-overlay-title="Move to workspace: 2" { spawn "~/.config/niri/scripts/toggle" "workspace" "2"; }
+    Mod+3 hotkey-overlay-title="Move to workspace: 3" { spawn "~/.config/niri/scripts/toggle" "workspace" "3"; }
+    Mod+4 hotkey-overlay-title="Move to workspace: 4" { spawn "~/.config/niri/scripts/toggle" "workspace" "4"; }
+    Mod+5 hotkey-overlay-title="Move to workspace: 5" { spawn "~/.config/niri/scripts/toggle" "workspace" "5"; }
+    // Mod+6 hotkey-overlay-title="Move to workspace: 6" { spawn "~/.config/niri/scripts/toggle" "workspace" "6"; }
+    // Mod+7 hotkey-overlay-title="Move to workspace: 7" { spawn "~/.config/niri/scripts/toggle" "workspace" "7"; }
+    // Mod+8 hotkey-overlay-title="Move to workspace: 8" { spawn "~/.config/niri/scripts/toggle" "workspace" "8"; }
+    // Mod+9 hotkey-overlay-title="Move to workspace: 9" { spawn "~/.config/niri/scripts/toggle" "workspace" "9"; }
+    Mod+S hotkey-overlay-title="Move to workspace: special" { spawn "~/.config/niri/scripts/toggle" "scratch"; }
     
     Mod+Shift+1 { move-column-to-workspace 1; }
     Mod+Shift+2 { move-column-to-workspace 2; }

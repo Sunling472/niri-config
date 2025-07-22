@@ -8,6 +8,6 @@ def main [] {
   } else {
     let pid = $pid | into int
     kill $pid
-    waybar 
+    waybar -c ~/.config/niri/waybar/config.jsonc 
   }
 }
