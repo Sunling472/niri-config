@@ -6,6 +6,11 @@
 // Input device configuration.
 // Find the full list of options on the wiki:
 // https://github.com/YaLTeR/niri/wiki/Configuration:-Input
+
+debug {
+    honor-xdg-activation-with-invalid-serial
+}
+
 input {
     warp-mouse-to-focus mode="center-xy-always"
     keyboard {
@@ -62,7 +67,7 @@ input {
 
     // Focus windows and outputs automatically when moving the mouse into them.
     // Setting max-scroll-amount="0%" makes it work only on windows already fully on screen.
-    focus-follows-mouse 
+    // focus-follows-mouse 
 }
 
 // You can configure outputs by their name, which you can find
@@ -132,16 +137,16 @@ layout {
     // - "always", the focused column will always be centered.
     // - "on-overflow", focusing a column will center it if it doesn't fit
     //   together with the previously focused column.
-    center-focused-column "never"
+    center-focused-column "always"
 
     // You can customize the widths that "switch-preset-column-width" (Mod+R) toggles between.
     preset-column-widths {
         // Proportion sets the width as a fraction of the output width, taking gaps into account.
         // For example, you can perfectly fit four windows sized "proportion 0.25" on an output.
         // The default preset widths are 1/3, 1/2 and 2/3 of the output.
-        proportion 0.33333
         proportion 0.5
-        proportion 0.66667
+        proportion 0.95
+        proportion 1.0
 
         // Fixed sets the width in logical pixels exactly.
         // fixed 1920
@@ -151,7 +156,7 @@ layout {
     // preset-window-heights { }
 
     // You can change the default width of the new windows.
-    default-column-width { proportion 0.5; }
+    default-column-width { proportion 0.95; }
     // If you leave the brackets empty, the windows themselves will decide their initial width.
     // default-column-width {}
 
@@ -269,10 +274,12 @@ layout {
 }
 
 layer-rule {
-    match namespace="waybar"
-    match at-startup=true
+    match namespace="^quickshell-wallpaper$"
+}
 
-    opacity 0.8
+layer-rule {
+    match namespace="^quickshell-overview$"
+    place-within-backdrop true
 }
 
 // Add lines like this to spawn processes at startup.
@@ -281,10 +288,8 @@ layer-rule {
 // See the binds section below for more spawn examples.
 
 // This line starts waybar, a commonly used bar for Wayland compositors.
-spawn-at-startup "xwayland-satellite"
-spawn-at-startup "~/.config/niri/scripts/wallpaper"
-spawn-at-startup "~/.config/niri/scripts/waybar"
-spawn-at-startup "mako"
+// spawn-at-startup "xwayland-satellite"
+spawn-at-startup "qs" "-c" "noctalia-shell"
 
 // Uncomment this line to ask the clients to omit their client-side decorations if possible.
 // If the client will specifically ask for CSD, the request will be honored.
@@ -334,17 +339,8 @@ workspace "_" // special
 // Work around WezTerm's initial configure bug
 // by setting an empty default-column-width.
 window-rule {
-    // This regular expression is intentionally made as specific as possible,
-    // since this is the default config, and we want no false positives.
-    // You can get away with just app-id="wezterm" if you want.
-    match app-id=r#"^org\.wezfurlong\.wezterm$"#
-    default-column-width {}
-}
-
-window-rule {
     match app-id="nekoray"
     open-on-workspace "_"
-    default-column-display "tabbed"
 }
 
 window-rule {
@@ -352,23 +348,21 @@ window-rule {
     open-on-workspace "_"
 }
 
-window-rule {
-    match app-id="com.mitchellh.ghostty"
-    open-on-workspace "2"
-    // opacity 0.98
-}
+// window-rule {
+//     match app-id="com.mitchellh.ghostty"
+//     open-on-workspace "2"
+//     // opacity 0.98
+// }
 
 window-rule {
     match app-id="dev.zed.Zed"
     open-on-workspace "2"
-    open-maximized true
     open-focused true
 }
 
 window-rule {
     match app-id="zen"
     open-on-workspace "1"
-    open-maximized true
     open-focused true
 }
 
@@ -377,18 +371,6 @@ window-rule {
     match app-id=r#"zen$"# title="^Картинка в картинке$"
     open-floating true
     default-floating-position x=10 y=10 relative-to="bottom-right"
-}
-
-// Example: block out two password managers from screen capture.
-// (This example rule is commented out with a "/-" in front.)
-/-window-rule {
-    match app-id=r#"^org\.keepassxc\.KeePassXC$"#
-    match app-id=r#"^org\.gnome\.World\.Secrets$"#
-
-    block-out-from "screen-capture"
-
-    // Use this instead if you want them visible on third-party screenshot tools.
-    // block-out-from "screencast"
 }
 
 // Example: enable rounded corners for all windows.
@@ -423,8 +405,12 @@ overview {
     }
 }
 
+xwayland-satellite {
+    path "/usr/bin/xwayland-satellite"
+}
+
 environment {
-    DISPLAY ":1"
+    // DISPLAY null
     XDG_SESSION_TYPE "wayland"
     XDG_SESSION_DESKTOP "sway"
     XDG_CURRENT_DESKTOP "sway"
@@ -458,14 +444,14 @@ binds {
     // Mod+L            hotkey-overlay-title="Toggle calendar"   { spawn  "~/.config/niri/calendar"; }
 
     // Suggested binds for running programs: terminal, app launcher, screen locker.
-    Mod+Return hotkey-overlay-title="Open a Terminal: ghostty" { spawn "ghostty"; }
-    Mod+D hotkey-overlay-title="Run an Application: fuzzel" { spawn "fuzzel"; }
-    Mod+A hotkey-overlay-title="Screenshot area" { spawn "~/.config/niri/scripts/screenshot" "area"; }
-    Mod+Shift+A hotkey-overlay-title="Screenshot full" { spawn "~/.config/niri/scripts/screenshot" "full"; }
-    Mod+P hotkey-overlay-title="Color picker" { spawn "~/.config/niri/scripts/color_picker"; }
-    Mod+B hotkey-overlay-title="Spawn: bluetuith" { spawn "ghostty" "-e" "bluetuith"; }
-    Mod+Semicolon hotkey-overlay-title="Spawn: Zed" { spawn "zed"; }
-    Mod+I hotkey-overlay-title="Toggle notifications" { spawn "swaync-client" "-t"; }
+    Mod+Return    hotkey-overlay-title="Open a Terminal: ghostty"   { spawn "ghostty"; }
+    Mod+D         hotkey-overlay-title="Run an Application: fuzzel" { spawn "fuzzel"; }
+    Mod+A         hotkey-overlay-title="Screenshot area"            { spawn "~/.config/niri/scripts/screenshot" "area"; }
+    Mod+Shift+A   hotkey-overlay-title="Screenshot full"            { spawn "~/.config/niri/scripts/screenshot" "full"; }
+    Mod+P         hotkey-overlay-title="Color picker"               { spawn "~/.config/niri/scripts/color_picker"; }
+    Mod+B         hotkey-overlay-title="Spawn: bluetuith"           { spawn "ghostty" "-e" "bluetuith"; }
+    Mod+Semicolon hotkey-overlay-title="Spawn: Zed"                 { spawn "zed"; }
+    Mod+I         hotkey-overlay-title="Toggle notifications"       { spawn "swaync-client" "-t"; }
     // Super+Alt+L hotkey-overlay-title="Lock the Screen: swaylock" { spawn "swaylock"; }
 
     // You can also use a shell. Do this if you need pipes, multiple commands, etc.
@@ -474,18 +460,18 @@ binds {
 
     // Example volume keys mappings for PipeWire & WirePlumber.
     // The allow-when-locked=true property makes them work even when the session is locked.
-    XF86AudioRaiseVolume allow-when-locked=true { spawn "wpctl" "set-volume" "@DEFAULT_AUDIO_SINK@" "0.025+"; }
-    XF86AudioLowerVolume allow-when-locked=true { spawn "wpctl" "set-volume" "@DEFAULT_AUDIO_SINK@" "0.025-"; }
-    XF86AudioMute        allow-when-locked=true { spawn "wpctl" "set-mute" "@DEFAULT_AUDIO_SINK@" "toggle"; }
-    XF86AudioMicMute     allow-when-locked=true { spawn "wpctl" "set-mute" "@DEFAULT_AUDIO_SOURCE@" "toggle"; }
-    XF86MonBrightnessUp   allow-when-locked=true { spawn "brightnessctl" "set" "5%+"; }
-    XF86MonBrightnessDown allow-when-locked=true { spawn "brightnessctl" "set" "5%-"; }
+    XF86AudioRaiseVolume  allow-when-locked=true { spawn "wpctl" "set-volume" "@DEFAULT_AUDIO_SINK@" "0.025+"; }
+    XF86AudioLowerVolume  allow-when-locked=true { spawn "wpctl" "set-volume" "@DEFAULT_AUDIO_SINK@" "0.025-"; }
+    XF86AudioMute         allow-when-locked=true { spawn "wpctl" "set-mute" "@DEFAULT_AUDIO_SINK@" "toggle"; }
+    XF86AudioMicMute      allow-when-locked=true { spawn "wpctl" "set-mute" "@DEFAULT_AUDIO_SOURCE@" "toggle"; }
+    XF86MonBrightnessUp   allow-when-locked=true { spawn "qs" "-c" "noctalia-shell" "ipc" "call" "brightness" "increase"; }
+    XF86MonBrightnessDown allow-when-locked=true { spawn "qs" "-c" "noctalia-shell" "ipc" "call" "brightness" "decrease"; }
 
 
     // Open/close the Overview: a zoomed-out view of workspaces and windows.
     // You can also move the mouse into the top-left hot corner,
     // or do a four-finger swipe up on a touchpad.
-    Mod+O repeat=false { toggle-overview; }
+    Alt+Tab repeat=false { toggle-overview; }
 
     Mod+Q { close-window; }
 
@@ -603,15 +589,11 @@ binds {
     //
     // For example, with 2 workspaces + 1 empty, indices 3, 4, 5 and so on
     // will all refer to the 3rd workspace.
-    Mod+1 hotkey-overlay-title="Move to workspace: 1" { spawn "~/.config/niri/scripts/toggle" "workspace" "1"; }
-    Mod+2 hotkey-overlay-title="Move to workspace: 2" { spawn "~/.config/niri/scripts/toggle" "workspace" "2"; }
-    Mod+3 hotkey-overlay-title="Move to workspace: 3" { spawn "~/.config/niri/scripts/toggle" "workspace" "3"; }
-    Mod+4 hotkey-overlay-title="Move to workspace: 4" { spawn "~/.config/niri/scripts/toggle" "workspace" "4"; }
-    Mod+5 hotkey-overlay-title="Move to workspace: 5" { spawn "~/.config/niri/scripts/toggle" "workspace" "5"; }
-    // Mod+6 hotkey-overlay-title="Move to workspace: 6" { spawn "~/.config/niri/scripts/toggle" "workspace" "6"; }
-    // Mod+7 hotkey-overlay-title="Move to workspace: 7" { spawn "~/.config/niri/scripts/toggle" "workspace" "7"; }
-    // Mod+8 hotkey-overlay-title="Move to workspace: 8" { spawn "~/.config/niri/scripts/toggle" "workspace" "8"; }
-    // Mod+9 hotkey-overlay-title="Move to workspace: 9" { spawn "~/.config/niri/scripts/toggle" "workspace" "9"; }
+    Mod+1 hotkey-overlay-title="Move to workspace: 1"       { spawn "~/.config/niri/scripts/toggle" "workspace" "1"; }
+    Mod+2 hotkey-overlay-title="Move to workspace: 2"       { spawn "~/.config/niri/scripts/toggle" "workspace" "2"; }
+    Mod+3 hotkey-overlay-title="Move to workspace: 3"       { spawn "~/.config/niri/scripts/toggle" "workspace" "3"; }
+    Mod+4 hotkey-overlay-title="Move to workspace: 4"       { spawn "~/.config/niri/scripts/toggle" "workspace" "4"; }
+    Mod+5 hotkey-overlay-title="Move to workspace: 5"       { spawn "~/.config/niri/scripts/toggle" "workspace" "5"; }
     Mod+S hotkey-overlay-title="Move to workspace: special" { spawn "~/.config/niri/scripts/toggle" "scratch"; }
     
     Mod+Shift+1 { move-column-to-workspace 1; }
@@ -642,10 +624,10 @@ binds {
     // Expel the bottom window from the focused column to the right.
     Mod+Period { expel-window-from-column; }
 
-    Mod+R { switch-preset-column-width; }
+    Mod+R       { switch-preset-column-width; }
     Mod+Shift+R { switch-preset-window-height; }
-    Mod+Ctrl+R { reset-window-height; }
-    Mod+F { maximize-column; }
+    Mod+Ctrl+R  { reset-window-height; }
+    Mod+F       { maximize-column; }
     Mod+Shift+F { fullscreen-window; }
 
     // Expand the focused column to space not taken up by other fully visible columns.
@@ -674,7 +656,7 @@ binds {
 
     // Move the focused window between the floating and the tiling layout.
     Mod+V       { toggle-window-floating; }
-    Mod+E { switch-focus-between-floating-and-tiling; }
+    Mod+E       { switch-focus-between-floating-and-tiling; }
 
     // Toggle tabbed column display mode.
     // Windows in this column will appear as vertical tabs,
@@ -689,9 +671,9 @@ binds {
     // Mod+Space       { switch-layout "next"; }
     // Mod+Shift+Space { switch-layout "prev"; }
 
-    Print { screenshot; }
+    Print      { screenshot; }
     Ctrl+Print { screenshot-screen; }
-    Alt+Print { screenshot-window; }
+    Alt+Print  { screenshot-window; }
 
     // Applications such as remote-desktop clients and software KVM switches may
     // request that niri stops processing the keyboard shortcuts defined here
@@ -704,11 +686,12 @@ binds {
     Mod+Escape allow-inhibiting=false { toggle-keyboard-shortcuts-inhibit; }
 
     // The quit action will show a confirmation dialog to avoid accidental exits.
-    Mod+Shift+E { quit; }
+    Mod+Shift+E     { quit; }
     Ctrl+Alt+Delete { spawn "niripwmenu"; }
 
     // Powers off the monitors. To turn them back on, do any input like
     // moving the mouse or pressing any other key.
-    Mod+Shift+P { power-off-monitors; }
     Mod+Shift+K hotkey-overlay-title="Reload waybar" {spawn  "~/.config/niri/scripts/waybar";}
+    Mod+Shift+P                                      { power-off-monitors; }
+
 }
