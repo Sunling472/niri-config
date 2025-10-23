@@ -1,9 +1,7 @@
 ### Dependencies
 - niri
-- waybar
+- noctalia-shell
 - nushell
-- mako
-- swww
 - xwayland-satellite
 - fuzzel
 - ghostty (default terminal)
