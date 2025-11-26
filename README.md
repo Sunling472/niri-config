@@ -5,3 +5,4 @@
 - xwayland-satellite
 - fuzzel
 - ghostty (default terminal)
+- zellij

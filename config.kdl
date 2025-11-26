@@ -11,6 +11,10 @@ debug {
     honor-xdg-activation-with-invalid-serial
 }
 
+switch-events {
+    lid-close {spawn "qs" "-c" "noctalia-shell" "ipc" "call" "lockScreen" "lock";}
+}
+
 input {
     warp-mouse-to-focus mode="center-xy-always"
     keyboard {
@@ -50,16 +54,6 @@ input {
         // accel-speed 0.2
         // accel-profile "flat"
         // scroll-method "no-scroll"
-    }
-
-    trackpoint {
-        // off
-        // natural-scroll
-        // accel-speed 0.2
-        // accel-profile "flat"
-        // scroll-method "on-button-down"
-        // scroll-button 273
-        // middle-emulation
     }
 
     // Uncomment this to make the mouse warp to the center of newly focused windows.
@@ -326,6 +320,13 @@ animations {
 workspace "1"
 workspace "2"
 workspace "3"
+workspace "4"
+workspace "5"
+workspace "6"
+workspace "7"
+workspace "8"
+workspace "9"
+
 workspace "_" // special
 
 // Window rules let you adjust behavior for individual windows.
@@ -461,13 +462,12 @@ binds {
     // shows a list of important hotkeys.
     Mod+Shift+Slash                                           { show-hotkey-overlay; }
     Mod+Return       hotkey-overlay-title="Open a Terminal: ghostty"                   { spawn "ghostty"; }
-    Mod+Shift+Return hotkey-overlay-title="Open terminal zellij"                       { spawn "ghostty" "-e" "zellij" "a" "main";}
+    Mod+Shift+Return hotkey-overlay-title="Open terminal zellij"                       { spawn "ghostty" "-e" "tmux";}
     Mod+D            hotkey-overlay-title="Run an Application: fuzzel"                 { spawn "fuzzel"; }
     Mod+A            hotkey-overlay-title="Screenshot area"                            { spawn "~/.config/niri/scripts/screenshot" "area"; }
     Mod+Shift+A      hotkey-overlay-title="Screenshot full"                            { spawn "~/.config/niri/scripts/screenshot" "full"; }
     Mod+P            hotkey-overlay-title="Color picker"                               { spawn "~/.config/niri/scripts/color_picker"; }
     Mod+B            hotkey-overlay-title="Spawn: bluetuith"                           { spawn "ghostty" "-e" "bluetuith"; }
-    Mod+Semicolon    hotkey-overlay-title="Spawn: Zed"                                 { spawn "zed"; }
     Mod+O            repeat=false hotkey-overlay-title="Toggle noctalia control panel" { spawn "qs" "-c" "noctalia-shell" "ipc" "call" "controlCenter" "toggle"; }
     Mod+Shift+O      repeat=false hotkey-overlay-title="Toggle noctalia settings"      { spawn "qs" "-c" "noctalia-shell" "ipc" "call" "settings" "toggle" ; }
     Mod+M            repeat=false hotkey-overlay-title="Toggle noctalia clipboard"     { spawn "qs" "-c" "noctalia-shell" "ipc" "call" "launcher" "clipboard"; }
@@ -481,12 +481,12 @@ binds {
 
     // Example volume keys mappings for PipeWire & WirePlumber.
     // The allow-when-locked=true property makes them work even when the session is locked.
-    XF86AudioRaiseVolume  allow-when-locked=true { spawn "qs" "-c" "noctalia-shell" "ipc" "call" "volume"     "increase"; }
-    XF86AudioLowerVolume  allow-when-locked=true { spawn "qs" "-c" "noctalia-shell" "ipc" "call" "volume"     "decrease"; }
-    XF86AudioMute         allow-when-locked=true { spawn "qs" "-c" "noctalia-shell" "ipc" "call" "volume"     "muteOutput"; }
-    XF86AudioMicMute      allow-when-locked=true { spawn "qs" "-c" "noctalia-shell" "ipc" "call" "volume"     "muteInput"; }
-    XF86MonBrightnessUp   allow-when-locked=true { spawn "qs" "-c" "noctalia-shell" "ipc" "call" "brightness" "increase"; }
-    XF86MonBrightnessDown allow-when-locked=true { spawn "qs" "-c" "noctalia-shell" "ipc" "call" "brightness" "decrease"; }
+    XF86AudioRaiseVolume  allow-when-locked=true { spawn "wpctl" "set-volume" "@DEFAULT_AUDIO_SINK@" "0.05+"; }
+    XF86AudioLowerVolume  allow-when-locked=true { spawn "wpctl" "set-volume" "@DEFAULT_AUDIO_SINK@" "0.05-"; }
+    XF86AudioMute         allow-when-locked=true { spawn "wpctl" "set-mute" "@DEFAULT_AUDIO_SINK@" "toggle"; }
+    XF86AudioMicMute      allow-when-locked=true { spawn "wpctl" "set-mute" "@DEFAULT_AUDIO_SOURCE@" "toggle"; }
+    XF86MonBrightnessUp   allow-when-locked=true { spawn "brightnessctl" "set" "5%+"; }
+    XF86MonBrightnessDown allow-when-locked=true { spawn "brightnessctl" "set" "5%-"; }
 
 
     // Open/close the Overview: a zoomed-out view of workspaces and windows.
@@ -565,6 +565,12 @@ binds {
     Mod+1 hotkey-overlay-title="Move to workspace: 1"       { spawn "~/.config/niri/scripts/toggle" "workspace" "1"; }
     Mod+2 hotkey-overlay-title="Move to workspace: 2"       { spawn "~/.config/niri/scripts/toggle" "workspace" "2"; }
     Mod+3 hotkey-overlay-title="Move to workspace: 3"       { spawn "~/.config/niri/scripts/toggle" "workspace" "3"; }
+    Mod+4 hotkey-overlay-title="Move to workspace: 4"       { spawn "~/.config/niri/scripts/toggle" "workspace" "4"; }
+    Mod+5 hotkey-overlay-title="Move to workspace: 5"       { spawn "~/.config/niri/scripts/toggle" "workspace" "5"; }
+    Mod+6 hotkey-overlay-title="Move to workspace: 6"       { spawn "~/.config/niri/scripts/toggle" "workspace" "6"; }
+    Mod+7 hotkey-overlay-title="Move to workspace: 7"       { spawn "~/.config/niri/scripts/toggle" "workspace" "7"; }
+    Mod+8 hotkey-overlay-title="Move to workspace: 8"       { spawn "~/.config/niri/scripts/toggle" "workspace" "8"; }
+    Mod+9 hotkey-overlay-title="Move to workspace: 9"       { spawn "~/.config/niri/scripts/toggle" "workspace" "9"; }
     Mod+S hotkey-overlay-title="Move to workspace: special" { spawn "~/.config/niri/scripts/toggle" "scratch"; }
 
     Mod+Shift+1 { move-column-to-workspace 1; }
@@ -662,7 +668,7 @@ binds {
     // Powers off the monitors. To turn them back on, do any input like
     // moving the mouse or pressing any other key.
     Ctrl+Alt+Delete hotkey-overlay-title="Toggle session menu" { spawn "qs" "-c" "noctalia-shell" "ipc" "call" "sessionMenu" "toggle"; }
-    Mod+Shift+P hotkey-overlay-title="Toggle noctalia panel" { spawn "qs" "-c" "noctalia-shell" "ipc" "call" "bar" "toggle"; }
-    Mod+Shift+L hotkey-overlay-title="Lockscreen"            { spawn "qs" "-c" "noctalia-shell" "ipc" "call" "lockScreen" "lock"; }
+    Mod+Shift+P hotkey-overlay-title="Toggle noctalia panel"   { spawn "qs" "-c" "noctalia-shell" "ipc" "call" "bar" "toggle"; }
+    Mod+Shift+L hotkey-overlay-title="Lockscreen"              { spawn "qs" "-c" "noctalia-shell" "ipc" "call" "lockScreen" "lock"; }
 
 }

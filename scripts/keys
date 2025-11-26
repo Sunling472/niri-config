@@ -1,0 +1,13 @@
+#! /bin/nu
+
+def main [] {}
+
+def "main ru" [] {
+  let keys: list<string> = ["з" "х" "ж" "э" "0" "-" "."]
+  $keys | to text --no-newline | fuzzel -d | wl-copy -n
+}
+
+def "main en" [] {
+  let keys: list<string> = ["p" "[" ";" "'" "0" "-" "/"]
+  $keys | to text --no-newline | fuzzel -d | wl-copy -n
+}

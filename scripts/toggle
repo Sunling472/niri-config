@@ -19,11 +19,9 @@ def "main scratch" [] {
 def "main workspace" [name: string] {
     let workspaces: table = niri msg -j workspaces | from json
     let active: string = $workspaces | each { |r| if $r.is_active {
-        let name = $r.name 
+        let name = $r.name
         return $name
     }}
-    $active | print
-    $name | print 
     if $name != $active.0 {
         niri msg action focus-workspace $name
     } else {
